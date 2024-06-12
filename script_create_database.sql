@@ -5,7 +5,9 @@ CREATE TABLE veiculo (
 	placa VARCHAR(8) NOT NULL UNIQUE,
 	modelo VARCHAR(100) NOT NULL,
 	ano INT NOT NULL CHECK (ano > 2007),
-	dt_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+	status VARCHAR(50) NOT NULL,
+	dt_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	dt_atualizacao DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE sensor (
@@ -22,6 +24,32 @@ CREATE TABLE registro (
 	dt_coleta DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	fk_sensor INT FOREIGN KEY REFERENCES sensor(id_sensor) NOT NULL
 );
+
+CREATE TABLE tweets (
+	id_tweet INT PRIMARY KEY IDENTITY (1,1),
+	usuario VARCHAR(100) NOT NULL,
+	tweet VARCHAR(5000) NOT NULL,
+	classificacao_sentimento FLOAT NOT NULL,
+	tweet_tratado VARCHAR(5000) NOT NULL,
+	dt_insercao DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE instancia (
+	id_instancia INT PRIMARY KEY IDENTITY (1,1),
+	nome VARCHAR(100) NOT NULL,
+	tipo VARCHAR(50) NOT NULL,
+	data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE registro_instancia (
+	id_registro_instancia INT PRIMARY KEY IDENTITY (1,1),
+	cpu FLOAT,
+	ram FLOAT,
+	disco FLOAT,
+	dt_insercao DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	fk_instancia INT FOREIGN KEY REFERENCES instancia(id_instancia)
+)
+
 
 CREATE INDEX idc_veiculo_ano ON veiculo(ano);
 CREATE INDEX idc_veiculo_placa ON veiculo(placa);
